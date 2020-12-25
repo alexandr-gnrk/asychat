@@ -10,7 +10,7 @@ service Chat {
 }
 
 message ConnectionRequest {
-    string nickname = 1;
+    string username = 1;
 }
 
 message DisconnectionRequest {
