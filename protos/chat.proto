@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package chat;
+
+
+service Chat {
+    rpc connect(ConnectionRequest) returns (ConnectionResponse) {}
+    rpc disconnect(DisconnectionRequest) returns (Status) {}
+    rpc send_message(Message) returns (Status) {}
+}
+
+message ConnectionRequest {
+    string nickname = 1;
+}
+
+message DisconnectionRequest {
+    string user_token = 1;
+}
+
+message ConnectionResponse {
+    string user_token = 1;
+    Status status = 2;
+}
+
+message Status {
+    bool is_ok = 1;
+    string error_message = 2;
+}
+
+message Message {
+    string user_token = 1;
+    string text = 2;
+}
+
