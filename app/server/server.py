@@ -1,8 +1,10 @@
 from concurrent import futures
 import threading
 import uuid
+import json
 
 import grpc
+import pika
 from loguru import logger
 
 from ..proto import serverchat_pb2 as schat_pb2
@@ -11,14 +13,37 @@ from ..proto import serverchat_pb2_grpc as schat_pb2_grpc
 
 class ChatServicer(schat_pb2_grpc.ServerChatServicer):
 
+    ACTIONS_MAP = {
+        schat_pb2.Action.ActionType.CONNECT: 'CONNECT',
+        schat_pb2.Action.ActionType.DISCONNECT: 'DISCONNECT',
+        schat_pb2.Action.ActionType.SEND_MESSAGE: 'SEND_MESSAGE',
+    }
+
     def __init__(self):
         self.tokens = dict()
         self.tokens_lock = threading.Lock()
+        
         self.actions = list()
         self.actions_lock = threading.Lock()
+        
+        self.queue_name = 'chat_events'
+        self.rabbit_connection = pika.BlockingConnection(
+            pika.ConnectionParameters(host='localhost'))
+        self.rabbit_channel = self.rabbit_connection.channel()
+        self.rabbit_channel.queue_declare(queue=self.queue_name)
 
     def add_new_action(self, username, action_type, playload=''):
         with self.actions_lock:
+            # send action to rabbitmq
+            self.rabbit_channel.basic_publish(
+                exchange='',
+                routing_key=self.queue_name,
+                body=json.dumps({
+                    'username': username,
+                    'action_type': self.ACTIONS_MAP[action_type],
+                    'playload': playload,
+                    }))
+            # save action inside list
             self.actions.append(
                 schat_pb2.Action(
                     username=username,
@@ -110,6 +135,12 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
             # send actions
             for action in actions_to_send:
                 yield action
+
+    def clenup(self):
+        self.rabbit_connection.close()
+
+    def __del__(self):
+        self.clenup
     
 
 def serve():
