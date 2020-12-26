@@ -1,6 +1,8 @@
 import grpc
+import threading
 
 from ..proto import serverchat_pb2 as schat_pb2
+from ..proto import serverchat_pb2_grpc as schat_pb2_grpc
 
 
 class ServerConnection():
@@ -42,11 +44,13 @@ class ServerConnection():
 
     def start_message_listener(self, callback):
         threading.Thread(
-            target=chat_server.actions_listener, 
+            target=self.actions_listener, 
             args=(callback,)).start()
 
     def cleanup(self):
         if self.channel is not None:
+            if self.token is not None:
+                self.disconnect_user()
             self.channel.close()
 
     def __del__(self):

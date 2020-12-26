@@ -14,5 +14,6 @@ if args.server:
     import app.server
     app.server.serve()
 else:
-    import app.client
-    app.client.start()
+    from app.client import Client
+    target = 'localhost:50051'
+    Client(target).start()
