@@ -1,12 +1,17 @@
 syntax = "proto3";
 
-package chat;
+package serverchat;
 
 
-service Chat {
+service ServerChat {
     rpc connect(ConnectionRequest) returns (ConnectionResponse) {}
     rpc disconnect(DisconnectionRequest) returns (Status) {}
     rpc send_message(Message) returns (Status) {}
+    rpc get_chat_stream(Empty) returns (stream Action) {}
+}
+
+message Empty {
+
 }
 
 message ConnectionRequest {
@@ -30,5 +35,16 @@ message Status {
 message Message {
     string user_token = 1;
     string text = 2;
+}
+
+message Action {
+    enum ActionType {
+        CONNECT = 0;
+        DISCONNECT = 1;
+        SEND_MESSAGE = 2;
+    }
+    string username = 1;
+    ActionType action_type = 2;
+    string playload = 3;
 }
 

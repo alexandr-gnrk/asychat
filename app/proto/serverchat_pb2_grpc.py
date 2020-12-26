@@ -2,8 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import serverchat_pb2 as serverchat__pb2
-
+from app.proto import serverchat_pb2 as serverchat__pb2
 
 class ServerChatStub(object):
     """Missing associated documentation comment in .proto file."""

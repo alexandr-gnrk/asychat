@@ -5,8 +5,8 @@ import uuid
 import grpc
 from loguru import logger
 
-import serverchat_pb2 as schat_pb2
-import serverchat_pb2_grpc as schat_pb2_grpc
+from ..proto import serverchat_pb2 as schat_pb2
+from ..proto import serverchat_pb2_grpc as schat_pb2_grpc
 
 
 class ChatServicer(schat_pb2_grpc.ServerChatServicer):
@@ -113,6 +113,7 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
     
 
 def serve():
+    logger.debug('Chat server started at localhost:50051')
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     schat_pb2_grpc.add_ServerChatServicer_to_server(
         ChatServicer(), server)
@@ -122,8 +123,4 @@ def serve():
 
 
 if __name__ == '__main__':
-    print('Chat gRPC server started.')
     serve()
-    # rpc connect(ConnectionRequest) returns (ConnectionResponse) {}
-    # rpc disconnect(DisconnectionRequest) returns (Status) {}
-    # rpc send_message(Message) returns (Status) {}
