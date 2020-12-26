@@ -54,9 +54,6 @@ class Client():
         self.server.start_message_listener(self.handle_action)
         # show window
         self.root.deiconify()
-        self.add_connect_message('Some guy')
-        self.add_disconnect_message('Some guy')
-        self.add_new_message('Some guy', 'hi i am live inside your computer')
         self.root.mainloop()
 
     def get_username(self):
