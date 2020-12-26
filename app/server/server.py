@@ -40,11 +40,11 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
                 user_token = token
                 is_ok, error_message = True, ''
 
-                logger.debug(f'User {request.username} connected')
+                logger.debug(f'User <{request.username}> connected')
             else:
                 user_token = ''
                 is_ok, error_message = False, 'User with such name already exists.'
-                logger.debug(f'User {request.username} tried unsuccessfully to connect')
+                logger.debug(f'User <{request.username}> tried unsuccessfully to connect')
 
         
         return schat_pb2.ConnectionResponse(
@@ -66,10 +66,10 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
 
                 is_ok, error_message = True, ''
 
-                logger.debug(f'User {username} disconnected')
+                logger.debug(f'User <{username}> disconnected')
             else:
                 is_ok, error_message = False, 'There aren\'t such user.'
-                logger.debug(f'User {request.username} tried unsuccessfully to disconnected')
+                logger.debug(f'User <{request.username}> tried unsuccessfully to disconnected')
 
 
         return schat_pb2.Status(
@@ -89,10 +89,10 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
 
                 print('{}> {}'.format(username, request.text))
                 is_ok, error_message = True, ''
-                logger.debug(f'User {username} sent message {request.text}')
+                logger.debug(f'User <{username}> sent message "{request.text}"')
             else:
                 is_ok, error_message = False, 'Token is not valid.'
-                logger.debug(f'User with token {request.token} tried unsuccessfully to sent message {request.text}')
+                logger.debug(f'User with token <{request.token}> tried unsuccessfully to sent message {request.text}')
 
 
         return schat_pb2.Status(
