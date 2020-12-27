@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x10serverchat.proto\x12\nserverchat\"\x07\n\x05\x45mpty\"%\n\x11\x43onnectionRequest\x12\x10\n\x08username\x18\x01 \x01(\t\"*\n\x14\x44isconnectionRequest\x12\x12\n\nuser_token\x18\x01 \x01(\t\"L\n\x12\x43onnectionResponse\x12\x12\n\nuser_token\x18\x01 \x01(\t\x12\"\n\x06status\x18\x02 \x01(\x0b\x32\x12.serverchat.Status\".\n\x06Status\x12\r\n\x05is_ok\x18\x01 \x01(\x08\x12\x15\n\rerror_message\x18\x02 \x01(\t\"+\n\x07Message\x12\x12\n\nuser_token\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\"\x9d\x01\n\x06\x41\x63tion\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x32\n\x0b\x61\x63tion_type\x18\x02 \x01(\x0e\x32\x1d.serverchat.Action.ActionType\x12\x10\n\x08playload\x18\x03 \x01(\t\";\n\nActionType\x12\x0b\n\x07\x43ONNECT\x10\x00\x12\x0e\n\nDISCONNECT\x10\x01\x12\x10\n\x0cSEND_MESSAGE\x10\x02\x32\x97\x02\n\nServerChat\x12J\n\x07\x63onnect\x12\x1d.serverchat.ConnectionRequest\x1a\x1e.serverchat.ConnectionResponse\"\x00\x12\x44\n\ndisconnect\x12 .serverchat.DisconnectionRequest\x1a\x12.serverchat.Status\"\x00\x12\x39\n\x0csend_message\x12\x13.serverchat.Message\x1a\x12.serverchat.Status\"\x00\x12<\n\x0fget_chat_stream\x12\x11.serverchat.Empty\x1a\x12.serverchat.Action\"\x00\x30\x01\x62\x06proto3'
+  serialized_pb=b'\n\x10serverchat.proto\x12\nserverchat\"\x07\n\x05\x45mpty\"%\n\x11\x43onnectionRequest\x12\x10\n\x08username\x18\x01 \x01(\t\"*\n\x14\x44isconnectionRequest\x12\x12\n\nuser_token\x18\x01 \x01(\t\"L\n\x12\x43onnectionResponse\x12\x12\n\nuser_token\x18\x01 \x01(\t\x12\"\n\x06status\x18\x02 \x01(\x0b\x32\x12.serverchat.Status\".\n\x06Status\x12\r\n\x05is_ok\x18\x01 \x01(\x08\x12\x15\n\rerror_message\x18\x02 \x01(\t\"+\n\x07Message\x12\x12\n\nuser_token\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\"\x9c\x01\n\x06\x41\x63tion\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x32\n\x0b\x61\x63tion_type\x18\x02 \x01(\x0e\x32\x1d.serverchat.Action.ActionType\x12\x0f\n\x07payload\x18\x03 \x01(\t\";\n\nActionType\x12\x0b\n\x07\x43ONNECT\x10\x00\x12\x0e\n\nDISCONNECT\x10\x01\x12\x10\n\x0cSEND_MESSAGE\x10\x02\x32\x97\x02\n\nServerChat\x12J\n\x07\x63onnect\x12\x1d.serverchat.ConnectionRequest\x1a\x1e.serverchat.ConnectionResponse\"\x00\x12\x44\n\ndisconnect\x12 .serverchat.DisconnectionRequest\x1a\x12.serverchat.Status\"\x00\x12\x39\n\x0csend_message\x12\x13.serverchat.Message\x1a\x12.serverchat.Status\"\x00\x12<\n\x0fget_chat_stream\x12\x11.serverchat.Empty\x1a\x12.serverchat.Action\"\x00\x30\x01\x62\x06proto3'
 )
 
 
@@ -49,8 +49,8 @@ _ACTION_ACTIONTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=394,
-  serialized_end=453,
+  serialized_start=393,
+  serialized_end=452,
 )
 _sym_db.RegisterEnumDescriptor(_ACTION_ACTIONTYPE)
 
@@ -284,7 +284,7 @@ _ACTION = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='playload', full_name='serverchat.Action.playload', index=2,
+      name='payload', full_name='serverchat.Action.payload', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -304,7 +304,7 @@ _ACTION = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=296,
-  serialized_end=453,
+  serialized_end=452,
 )
 
 _CONNECTIONRESPONSE.fields_by_name['status'].message_type = _STATUS
@@ -377,8 +377,8 @@ _SERVERCHAT = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=456,
-  serialized_end=735,
+  serialized_start=455,
+  serialized_end=734,
   methods=[
   _descriptor.MethodDescriptor(
     name='connect',

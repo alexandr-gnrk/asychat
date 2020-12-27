@@ -45,6 +45,6 @@ message Action {
     }
     string username = 1;
     ActionType action_type = 2;
-    string playload = 3;
+    string payload = 3;
 }
 

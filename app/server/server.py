@@ -32,7 +32,7 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
         self.rabbit_channel = self.rabbit_connection.channel()
         self.rabbit_channel.queue_declare(queue=self.queue_name)
 
-    def add_new_action(self, username, action_type, playload=''):
+    def add_new_action(self, username, action_type, payload=''):
         with self.actions_lock:
             # send action to rabbitmq
             self.rabbit_channel.basic_publish(
@@ -41,14 +41,14 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
                 body=json.dumps({
                     'username': username,
                     'action_type': self.ACTIONS_MAP[action_type],
-                    'playload': playload,
+                    'payload': payload,
                     }))
             # save action inside list
             self.actions.append(
                 schat_pb2.Action(
                     username=username,
                     action_type=action_type,
-                    playload=playload))
+                    payload=payload))
 
     def connect(self, request, context):
         with self.tokens_lock:

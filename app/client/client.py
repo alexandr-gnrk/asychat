@@ -77,7 +77,7 @@ class Client():
         elif action.action_type == schat_pb2.Action.ActionType.DISCONNECT:
             self.add_disconnect_message(action.username)
         elif action.action_type == schat_pb2.Action.ActionType.SEND_MESSAGE:
-            self.add_new_message(action.username, action.playload)
+            self.add_new_message(action.username, action.payload)
 
     def get_time_string(self):
         return datetime.now().strftime('[%H:%M]')
