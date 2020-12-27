@@ -1,4 +1,5 @@
 from concurrent import futures
+from datetime import datetime
 import threading
 import uuid
 import json
@@ -39,6 +40,7 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
                 exchange='',
                 routing_key=self.queue_name,
                 body=json.dumps({
+                    'time': datetime.now().timestamp(),
                     'username': username,
                     'action_type': self.ACTIONS_MAP[action_type],
                     'payload': payload,

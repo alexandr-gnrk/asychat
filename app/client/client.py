@@ -104,3 +104,4 @@ class Client():
     def exit(self):
         self.server.cleanup()
         self.root.destroy()
+        exit(0)
