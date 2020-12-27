@@ -1,4 +1,10 @@
+from datetime import datetime
+import json
+
+from ..chatdb import ChatDB
+
 import pika
+from loguru import logger
 
 
 class MSGListener():
@@ -15,13 +21,21 @@ class MSGListener():
             queue=self.queue_name, 
             on_message_callback=self.callback, 
             auto_ack=True)
+        self.db = ChatDB()
 
     def callback(self, ch, method, properties, body):
-        print(" [x] Received %r" % body)
+        body = json.loads(body)
+        print(body)
+        print(body['time'])
+        print(float(body['time']))
+        log_record = self.db.add_chatlog(
+            datetime.fromtimestamp(float(body['time'])),
+            body['username'],
+            body['action_type'],
+            body['payload'])
+        self.db.commit()
+        logger.info(f'Saved: {log_record}')
 
     def start(self):
+        logger.info('Message listener started')
         self.channel.start_consuming()
-
-
-if __name__ == '__main__':
-    MSGListener().start()
