@@ -26,6 +26,9 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
         
         self.actions = list()
         self.actions_lock = threading.Lock()
+
+        self.new_action_cond = threading.Condition(
+            threading.Lock())
         
         self.queue_name = 'chat_events'
         self.rabbit_connection = pika.BlockingConnection(
@@ -51,6 +54,9 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
                     username=username,
                     action_type=action_type,
                     payload=payload))
+        
+        with self.new_action_cond:
+            self.new_action_cond.notify_all()
 
     def connect(self, request, context):
         with self.tokens_lock:
@@ -73,7 +79,6 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
                 is_ok, error_message = False, 'User with such name already exists.'
                 logger.debug(f'User <{request.username}> tried unsuccessfully to connect')
 
-        
         return schat_pb2.ConnectionResponse(
             user_token=user_token,
             status=schat_pb2.Status(
@@ -114,7 +119,6 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
                     schat_pb2.Action.ActionType.SEND_MESSAGE,
                     request.text)
 
-                print('{}> {}'.format(username, request.text))
                 is_ok, error_message = True, ''
                 logger.debug(f'User <{username}> sent message "{request.text}"')
             else:
@@ -137,6 +141,12 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
             # send actions
             for action in actions_to_send:
                 yield action
+
+            with self.new_action_cond:
+                self.actions_lock.acquire()
+                while len(self.actions) == next_action_ind:
+                    self.actions_lock.release()
+                    self.new_action_cond.wait()
 
     def cleanup(self):
         self.rabbit_connection.close()

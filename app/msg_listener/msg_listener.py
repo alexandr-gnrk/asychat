@@ -25,9 +25,6 @@ class MSGListener():
 
     def callback(self, ch, method, properties, body):
         body = json.loads(body)
-        print(body)
-        print(body['time'])
-        print(float(body['time']))
         log_record = self.db.add_chatlog(
             datetime.fromtimestamp(float(body['time'])),
             body['username'],
