@@ -138,11 +138,11 @@ class ChatServicer(schat_pb2_grpc.ServerChatServicer):
             for action in actions_to_send:
                 yield action
 
-    def clenup(self):
+    def cleanup(self):
         self.rabbit_connection.close()
 
     def __del__(self):
-        self.clenup
+        self.cleanup()
     
 
 def serve():
